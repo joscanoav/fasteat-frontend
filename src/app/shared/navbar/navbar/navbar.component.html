@@ -1,1 +1,20 @@
-<p>navbar works!</p>
+<p-megamenu [model]="items" class="navbar-menu">
+  <ng-template #start>
+    <a routerLink="/" class="navbar-logo">
+      <img src="assets/images/logo.png" alt="FastEat Logo" height="40">
+    </a>
+  </ng-template>
+
+  <ng-template #end>
+    <!-- Solo si está logueado mostramos botón de salir -->
+    <button
+      *ngIf="isLoggedIn"
+      pButton
+      type="button"
+      label="Cerrar sesión"
+      icon="pi pi-sign-out"
+      class="p-button-text"
+      (click)="onLogoutClick()"
+    ></button>
+  </ng-template>
+</p-megamenu>

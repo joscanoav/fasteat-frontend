@@ -1,1 +1,36 @@
-<p>register works!</p>
+<form class="register-form" (ngSubmit)="onSubmit()">
+  <h2>Registrarse</h2>
+
+  <input
+    [(ngModel)]="nombre"
+    name="nombre"
+    placeholder="Nombre"
+    required
+  />
+
+  <input
+    type="email"
+    [(ngModel)]="email"
+    name="email"
+    placeholder="Email"
+    required
+  />
+
+  <input
+    type="password"
+    [(ngModel)]="password"
+    name="password"
+    placeholder="Contraseña"
+    required
+  />
+
+  <button
+    pButton
+    type="submit"
+    label="Registrar"
+  ></button>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <p>¿Ya tienes cuenta? <a routerLink="/login">Entra aquí</a></p>
+</form>

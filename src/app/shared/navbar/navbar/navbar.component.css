@@ -1,0 +1,14 @@
+.navbar-menu {
+  /* Ajustes generales */
+}
+
+.navbar-logo img {
+  vertical-align: middle;
+}
+
+/* Si quieres alinear el botón de logout a la derecha dentro de megamenu */
+:host ::ng-deep .p-megamenu-end {
+  display: flex;
+  align-items: center;
+}
+

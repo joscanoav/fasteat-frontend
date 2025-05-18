@@ -1,0 +1,8 @@
+/* Ajustes específicos de estilo (si los necesitas) */
+/* Por ejemplo, para centrar el formulario en pantallas muy pequeñas */
+@media (max-width: 640px) {
+  .w-96 {
+    width: 90%;
+  }
+}
+

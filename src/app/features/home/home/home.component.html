@@ -1,1 +1,57 @@
-<p>home works!*-*</p>
+<!-- Contenedor principal -->
+<div class="home-container">
+    <!-- Línea de promoción -->
+    <div class="top-line">¡SOLO HOY! 30% de descuento a partir de 25€</div>
+
+    <!-- Mega Menu -->
+    <div class="card mega-card">
+        <p-megamenu [model]="menuItems" class="mega-menu">
+            <ng-template #start>
+                <a routerLink="/" class="logo">
+                    <img src="assets/images/logo.png" alt="Logo FastEat" class="logo-img">
+                </a>
+            </ng-template>
+
+            <ng-template #item let-item>
+                <a *ngIf="item.routerLink" [routerLink]="item.routerLink" class="menu-item">
+                    <span>{{ item.label }}</span>
+                </a>
+            </ng-template>
+
+            <ng-template #end>
+                <div class="menu-right">
+                    <button pButton type="button" class="p-button-primary order-button" (click)="showLoginDialog()">
+                        <i class="pi pi-shopping-cart"></i>
+                        <span>Comenzar pedido</span>
+                    </button>
+                </div>
+            </ng-template>
+        </p-megamenu>
+    </div>
+
+    <!-- Diálogo de Login -->
+    <p-dialog [(visible)]="loginDialogVisible" modal header="Iniciar Sesión" [style]="{width: '350px'}">
+        <app-login></app-login>
+    </p-dialog>
+
+    <!-- Carrusel de Promociones -->
+    <div class="card mt-8">
+        <p-carousel [value]="promotions" [numVisible]="3" [numScroll]="3" [circular]="true" [responsiveOptions]="responsiveOptions" autoplayInterval="3000">
+            <ng-template let-promotion #item>
+                <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
+                    <div class="mb-4">
+                        <div class="relative mx-auto">
+                            <img [src]="promotion.image"
+                                 [alt]="promotion.name" 
+                                 class="promo-img w-full rounded-lg" />
+                            <p-tag [value]="promotion.tag" [severity]="getSeverity(promotion.tag)" class="absolute" styleClass="dark:!bg-surface-900" [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" />
+                        </div>
+                    </div>
+                    <div class="mb-4 font-medium text-center text-xl">{{ promotion.name }}</div>
+                    <div class="text-center font-semibold text-2xl">{{ promotion.price }}</div>
+                </div>
+            </ng-template>
+        </p-carousel>
+    </div>
+
+</div>

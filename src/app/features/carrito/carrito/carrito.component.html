@@ -1,1 +1,16 @@
-<p>carrito works!</p>
+<h2>Tu Carrito</h2>
+
+<div *ngIf="cart.length; else empty">
+  <div *ngFor="let i of cart">
+    {{ i.cantidad }}× Producto {{ i.productoId }}
+  </div>
+  <button
+    pButton
+    label="Finalizar Pedido"
+    (click)="placeOrder()"
+  ></button>
+</div>
+
+<ng-template #empty>
+  <p>Tu carrito está vacío.</p>
+</ng-template>

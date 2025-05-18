@@ -1,11 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit }     from '@angular/core';
+import { CommonModule }          from '@angular/common';
+
+import { PedidoService, Pedido } from 'app/services/pedido.service';
 
 @Component({
   selector: 'app-pedidos',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './pedidos.component.html',
-  styleUrl: './pedidos.component.css'
+  styleUrls: ['./pedidos.component.css']
 })
-export class PedidosComponent {
+export class PedidosComponent implements OnInit {
+  pedidos: Pedido[] = [];
 
+  constructor(private svc: PedidoService) {}
+
+  ngOnInit() {
+    this.svc.listar().subscribe(data => this.pedidos = data);
+  }
 }

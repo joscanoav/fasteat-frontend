@@ -1,2 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeicons/primeicons.css";
+/* src/styles.css */
+/* Altura total para html, body y root */
+html, body, app-root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tipografía global, colores, resets, etc. */
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+
+
