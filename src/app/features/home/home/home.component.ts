@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.menuItems = [
-      { label: 'Nuestra Carta', routerLink: ['/restaurantes'] },
+      { label: 'Nuestra Carta', routerLink: ['/carta'] },
       { label: 'Cupones',       routerLink: ['/coupons']     },
       { label: 'Ubicación',     routerLink: ['/locations']   }
     ];

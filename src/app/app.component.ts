@@ -1,14 +1,20 @@
-import { Component }                 from '@angular/core';
-import { Router, NavigationEnd }     from '@angular/router';
-import { RouterOutlet }              from '@angular/router';
-import { NavbarComponent }           from './shared/navbar/navbar/navbar.component';
-import { FooterComponent }           from './shared/footer/footer/footer.component';
-import { AuthService }               from './services/auth.service';
+import { Component }      from '@angular/core';
+import { CommonModule }   from '@angular/common';       // ← lo necesitas para NgIf
+import { RouterOutlet }   from '@angular/router';
+import { NavbarComponent }from './shared/navbar/navbar/navbar.component';
+import { FooterComponent }from './shared/footer/footer/footer.component';
+import { AuthService }    from './services/auth.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ RouterOutlet, NavbarComponent, FooterComponent ],
+  imports: [
+    CommonModule,    // ← aquí
+    RouterOutlet,
+    NavbarComponent,
+    FooterComponent
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -19,7 +25,7 @@ export class AppComponent {
     private router: Router,
     private auth: AuthService
   ) {
-    // Al iniciar y en cada navegación, actualizamos el estado de login
+    // Al cambiar de ruta comprobamos token
     this.router.events.subscribe(evt => {
       if (evt instanceof NavigationEnd) {
         this.isLoggedIn = !!this.auth.getToken();
