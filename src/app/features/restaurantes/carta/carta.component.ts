@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 
 import { Plato } from './plato';
 import { PlatoService } from 'app/services/carta.service';
+import { HeaderComponent } from 'app/shared/header/header.component';
 
 @Component({
   selector: 'app-carta',
@@ -16,7 +17,8 @@ import { PlatoService } from 'app/services/carta.service';
     Tag,
     ButtonModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    HeaderComponent
   ],
   providers: [PlatoService],
 })

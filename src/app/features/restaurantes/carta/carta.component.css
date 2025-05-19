@@ -1,7 +1,7 @@
 /* 1) Limita el ancho y centra */
 .gallery-card {
-  max-width: 900px;
-  margin: 24px auto 0;    /* 24px espacio arriba, centrado horizontal */
+  max-width: 1200px;
+  margin: 16px auto 0;    /* 24px espacio arriba, centrado horizontal */
   padding: 32px 16px 30px;
   background: #fff;
   border-radius: 6px;
