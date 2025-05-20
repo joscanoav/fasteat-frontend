@@ -4,24 +4,21 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  /* fondo general */
   background: linear-gradient(135deg, #FFF4EC, #FFEDE4);
   padding: 1rem;
 }
 
 /* Tarjeta principal */
 .login-card {
-  /* anula el fondo gradient dentro de la tarjeta */
   background: #ffffff;
   border-radius: 0.75rem;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   width: 100%;
-  max-width: 320px;    /* más estrecha */
-
+  max-width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;        /* separación vertical uniforme */
+  gap: 1.25rem;
 }
 
 /* Header (logo + título) */
@@ -31,13 +28,13 @@
 .login-header img {
   display: block;
   margin: 0 auto;
-  width: 72px;         /* ligeramente más pequeña */
+  width: 72px;
   height: 72px;
 }
 .login-header h2 {
   color: #FF6B35;
   margin-top: 0.5rem;
-  font-size: 1.5rem;   /* un poco más compacto */
+  font-size: 1.5rem;
 }
 
 /* Campos de formulario */
@@ -60,7 +57,7 @@
 .field input:focus {
   border-color: #FF6B35;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(255,107,53,0.2);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
 }
 
 /* Error */
@@ -75,7 +72,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-top: 0.5rem;    /* separa botones de los inputs */
+  margin-top: 0.5rem;
 }
 .actions button {
   padding: 0.65rem;

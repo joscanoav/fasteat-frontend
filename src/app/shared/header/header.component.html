@@ -49,6 +49,6 @@
   [closable]="false"
 >
   <ng-template pTemplate="content">
-    <app-login (close)="loginDialogVisible = false"></app-login>
+  <app-login [embedMode]="true" (close)="loginDialogVisible = false"></app-login>
   </ng-template>
 </p-dialog>

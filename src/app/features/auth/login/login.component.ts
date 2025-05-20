@@ -1,12 +1,12 @@
-import { Component, inject, Output, EventEmitter } from '@angular/core';
+import { Component, inject, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth.service';
-import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-login',
@@ -22,12 +22,13 @@ import { DialogModule } from 'primeng/dialog';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
+  @Input() embedMode = false;
+  @Output() close = new EventEmitter<void>();
+
   email = '';
   password = '';
   loading = false;
   error = '';
-
-  @Output() close = new EventEmitter<void>();
 
   private auth = inject(AuthService);
   private router = inject(Router);
@@ -37,10 +38,10 @@ export class LoginComponent {
       this.error = 'Correo electrónico y contraseña son obligatorios';
       return;
     }
-    
+
     this.loading = true;
     this.error = '';
-    
+
     this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: () => {
         this.close.emit();
@@ -57,7 +58,6 @@ export class LoginComponent {
     this.router.navigate(['/registro']);
   }
 
-  // Opcional: Limpiar errores al cambiar campos
   onInputChange() {
     if (this.error) this.error = '';
   }
