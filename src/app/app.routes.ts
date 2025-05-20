@@ -13,7 +13,7 @@ import { CartaComponent } from './features/restaurantes/carta/carta.component';
 export const routes: Routes = [
   { path: '',             component: HomeComponent },
   { path: 'login',        component: LoginComponent },
-  { path: 'register',     component: RegisterComponent },
+  { path: 'registro',     component: RegisterComponent },
   {
     path: 'restaurantes',
     component: ListaRestComponent,

@@ -1,53 +1,50 @@
-<div class="flex justify-center items-center min-h-screen bg-gray-100">
-  <div class="p-card p-4 shadow-lg w-96">
-    <h2 class="text-center text-lg font-bold mb-4">Iniciar Sesión</h2>
+  <div class="login-card">
+    <div class="login-header">
+      <img src="/assets/images/logo.png" alt="FastEat Logo" />
+      <h2>Iniciar Sesión</h2>
+    </div>
 
-    <div class="mb-3">
-      <span class="p-input-icon-left w-full">
-        <i class="pi pi-user"></i>
+    <form (ngSubmit)="login()">
+      <div class="field">
+        <label for="email">Correo electrónico</label>
         <input
-          pInputText
+          id="email"
+          name="email"
           type="email"
-          class="w-full"
-          placeholder="Email"
+          placeholder="ejemplo@fasteat.com"
           [(ngModel)]="email"
           required
-          email
+          (input)="onInputChange()"
         />
-      </span>
-    </div>
+      </div>
 
-    <div class="mb-3">
-      <span class="p-input-icon-left w-full">
-        <i class="pi pi-lock"></i>
+      <div class="field">
+        <label for="password">Contraseña</label>
         <input
-          pInputText
+          id="password"
+          name="password"
           type="password"
-          class="w-full"
-          placeholder="Contraseña"
+          placeholder="••••••••"
           [(ngModel)]="password"
           required
-          minlength="6"
+          (input)="onInputChange()"
         />
-      </span>
-    </div>
+      </div>
 
-    <!-- Ahora *ngIf funciona correctamente -->
-    <p class="text-red-600 mb-2" *ngIf="error">{{ error }}</p>
+      <div *ngIf="error" class="error-msg">{{ error }}</div>
 
-    <button
-      pButton
-      label="Ingresar"
-      class="w-full mb-2"
-      [loading]="loading"
-      (click)="login()"
-    ></button>
+      <div class="actions">
+        <button class="accept" type="submit" [disabled]="loading">
+          Ingresar
+        </button>
+        <button class="cancel" type="button" (click)="close.emit()">
+          Cancelar
+        </button>
+      </div>
 
-    <button
-      pButton
-      label="Registrarse"
-      class="w-full p-button-outlined"
-      (click)="register()"
-    ></button>
+      <p class="register">
+        ¿No tienes cuenta?
+        <a (click)="register()">Regístrate ahora</a>
+      </p>
+    </form>
   </div>
-</div>

@@ -1,3 +1,4 @@
+/* header.component.css */
 /* 0) Host ocupa todo el ancho */
 :host {
   display: block;
@@ -32,30 +33,32 @@
 .mega-menu {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* logo a izq, items centro y botón a der */
+  justify-content: space-between;
   width: 100%;
-  padding: 15px 0;    /* mantén sólo padding vertical (si quieres) */
+  padding: 15px 0;
   background: white;
   border-radius: 3rem;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  gap: 2rem; /* espacio opcional entre enlaces */
+  gap: 2rem;
 }
 
 /* 4) Logo */
 .logo {
   margin-right: auto;
+  display: flex;
+  align-items: center;
 }
 .logo-img {
-  height: 120px;
-  width: 120px;
-  object-fit: cover;
-  border-radius: 10px;
+  height: 100px;  /* ajustado a un tamaño más pequeño */
+  width: auto;
+  object-fit: contain;
+  border-radius: 5px;
 }
 
 /* 5) Ítems del menú */
 .menu-item {
-  color: #000; /* asegúrate de un color negro */
+  color: #000;
   display: flex;
   align-items: center;
   padding: 12px 20px;
@@ -109,12 +112,11 @@
   .logo {
     order: -1;
     width: 100%;
-    text-align: center;
+    justify-content: center;
     margin-bottom: 10px;
   }
   .logo-img {
-    height: 80px;
-    width: 80px;
+    height: 60px;
   }
   .menu-item {
     padding: 8px 12px;

@@ -1,11 +1,12 @@
+// header.component.ts
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { MegaMenuItem } from 'primeng/api';
-import { MegaMenuModule } from 'primeng/megamenu';
-import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
-import { LoginComponent } from 'app/features/auth/login/login.component'; // Ajusta la ruta si es necesario
+import { CommonModule }    from '@angular/common';
+import { RouterModule }    from '@angular/router';
+import { MegaMenuItem }    from 'primeng/api';
+import { MegaMenuModule }  from 'primeng/megamenu';
+import { DialogModule }    from 'primeng/dialog';
+import { ButtonModule }    from 'primeng/button';
+import { LoginComponent }  from 'app/features/auth/login/login.component';
 
 @Component({
   selector: 'app-header',

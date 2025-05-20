@@ -1,20 +1,22 @@
-import { Component, inject }    from '@angular/core';
-import { CommonModule }         from '@angular/common';
-import { FormsModule }          from '@angular/forms';
-import { InputTextModule }      from 'primeng/inputtext';
-import { ButtonModule }         from 'primeng/button';
-import { Router }               from '@angular/router';
+import { Component, inject, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { Router } from '@angular/router';
 
-import { AuthService }          from '../../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule,    // <-- Necesario para *ngIf, *ngFor, etc.
+    CommonModule,
     FormsModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    DialogModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -25,28 +27,38 @@ export class LoginComponent {
   loading = false;
   error = '';
 
+  @Output() close = new EventEmitter<void>();
+
   private auth = inject(AuthService);
   private router = inject(Router);
 
   login() {
     if (!this.email || !this.password) {
-      this.error = 'Email y contraseña son obligatorios.';
+      this.error = 'Correo electrónico y contraseña son obligatorios';
       return;
     }
-
+    
     this.loading = true;
     this.error = '';
-    this.auth.login({ email: this.email, password: this.password })
-      .subscribe({
-        next: () => this.router.navigate(['/restaurantes']),
-        error: err => {
-          this.error = err.error?.message || 'Credenciales inválidas';
-          this.loading = false;
-        }
-      });
+    
+    this.auth.login({ email: this.email, password: this.password }).subscribe({
+      next: () => {
+        this.close.emit();
+        this.router.navigate(['/restaurantes']);
+      },
+      error: (err) => {
+        this.error = err.error?.message || 'Credenciales incorrectas';
+        this.loading = false;
+      }
+    });
   }
 
   register() {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/registro']);
+  }
+
+  // Opcional: Limpiar errores al cambiar campos
+  onInputChange() {
+    if (this.error) this.error = '';
   }
 }
