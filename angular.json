@@ -12,9 +12,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "outputPath": "docs",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "outputPath": "docs",          
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
