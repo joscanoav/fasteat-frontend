@@ -1,33 +1,29 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MegaMenuModule } from 'primeng/megamenu';
-import { MegaMenuItem } from 'primeng/api';
+
+// PrimeNG
+import { MenubarModule } from 'primeng/menubar';
+import { ButtonModule }  from 'primeng/button';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, MegaMenuModule],
+  imports: [ CommonModule, RouterModule, MenubarModule, ButtonModule ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
-  @Input() isLoggedIn = false;            // <— propiedad de entrada
-  @Output() logout = new EventEmitter<void>();  // <— evento de salida
+export class NavbarComponent {
+  @Input() isLoggedIn = false;
+  @Output() logout = new EventEmitter<void>();
 
-  items: MegaMenuItem[] = [];
+  items = [
+    { label: 'Inicio',     routerLink: '/' },
+    { label: 'Menú',       routerLink: '/menu' },
+    { label: 'Promociones',routerLink: '/promos' },
+    { label: 'Pedidos',    routerLink: '/pedidos' },
+    { label: 'Carrito',    routerLink: '/carrito' }
+  ];
 
-  ngOnInit() {
-    this.items = [
-      { label: 'Inicio', routerLink: '/' },
-      { label: 'Menú', routerLink: '/menu' },
-      { label: 'Promociones', routerLink: '/promos' },
-      { label: 'Pedidos', routerLink: '/pedidos' },
-      { label: 'Carrito', routerLink: '/carrito' }
-    ];
-  }
-
-  onLogoutClick() {
-    this.logout.emit();
-  }
+  onLogoutClick() { this.logout.emit(); }
 }

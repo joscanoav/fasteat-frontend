@@ -1,14 +1,49 @@
 <h2>Tu Carrito</h2>
 
-<div *ngIf="cart.length; else empty">
-  <div *ngFor="let i of cart">
-    {{ i.cantidad }}× Producto {{ i.productoId }}
+<div *ngIf="items.length; else empty">
+  <p-table [value]="items">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Subtotal</th>
+        <th>Acción</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-i>
+      <tr>
+        <td>{{ i.nombre }}</td>
+        <td>
+          <p-inputNumber
+            [(ngModel)]="i.cantidad"
+            (onInput)="onQtyChange(i)"
+            [min]="1"
+          ></p-inputNumber>
+        </td>
+        <td>{{ i.precio | currency:'EUR' }}</td>
+        <td>{{ (i.precio * i.cantidad) | currency:'EUR' }}</td>
+        <td>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-text"
+            (click)="remove(i)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <div class="p-d-flex p-jc-end p-mt-3">
+    <h3>Total: {{ total | currency:'EUR' }}</h3>
+    <button
+      pButton
+      label="Finalizar Pedido"
+      (click)="placeOrder()"
+      class="p-ml-3"
+    ></button>
   </div>
-  <button
-    pButton
-    label="Finalizar Pedido"
-    (click)="placeOrder()"
-  ></button>
 </div>
 
 <ng-template #empty>

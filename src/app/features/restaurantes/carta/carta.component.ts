@@ -1,47 +1,61 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { Tag } from 'primeng/tag';
-import { ButtonModule } from 'primeng/button';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';  // <-- importa Router
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
 
-import { Plato } from './plato';
-import { PlatoService } from 'app/services/carta.service';
-import { HeaderComponent } from 'app/shared/header/header.component';
+import { RestauranteService } from 'app/services/restaurante.service';
+import { CarritoService } from 'app/services/carrito.service';
+import { Promo, Restaurante } from 'app/models/restaurante.model';
 
 @Component({
   selector: 'app-carta',
-  templateUrl: './carta.component.html',
-  styleUrls: ['./carta.component.css'],
   standalone: true,
   imports: [
-    Tag,
-    ButtonModule,
     CommonModule,
-    FormsModule,
-    HeaderComponent
+    RouterModule,
+    CardModule,
+    ButtonModule
   ],
-  providers: [PlatoService],
+  templateUrl: './carta.component.html',
+  styleUrls: ['./carta.component.css']
 })
 export class CartaComponent implements OnInit {
-  platos = signal<Plato[]>([]);
+  restaurante!: Restaurante;
+  promos: Promo[] = [];
 
-  constructor(private platoService: PlatoService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private svc: RestauranteService,
+    private carritoSvc: CarritoService,
+    private router: Router             // <-- aquí
 
-  ngOnInit() {
-    this.platoService.getPlatos().then(platos => this.platos.set(platos));
-  }
+  ) {}
 
-  /** Sólo los primeros 6 para la galería */
-  get primerosSeis(): Plato[] {
-    return this.platos().slice(0, 6);
-  }
-
-  getSeverity(plato: Plato) {
-    switch (plato.inventoryStatus) {
-      case 'INSTOCK':    return 'success';
-      case 'LOWSTOCK':   return 'warn';
-      case 'OUTOFSTOCK': return 'danger';
-      default:           return null;
+  ngOnInit(): void {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = idParam ? Number(idParam) : null;
+    if (id !== null) {
+      this.svc.obtener(id).subscribe({
+        next: r => {
+          this.restaurante = r;
+          this.promos = r.promos;
+        },
+        error: err => console.error('Error cargando carta', err)
+      });
     }
+  }
+
+  agregarAlCarrito(promo: Promo) {
+    const item = {
+      restauranteId: this.restaurante.idRestaurante!,
+      nombre:         promo.nombre,
+      precio:         promo.precio,
+      cantidad:       1,
+      url:            promo.url
+    };
+    this.carritoSvc.agregar(item);
+    this.router.navigate(['/carrito']);
+
   }
 }

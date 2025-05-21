@@ -1,3 +1,4 @@
+// src/app/features/auth/login/login.component.ts
 import { Component, inject, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../../services/auth.service';
+import { AuthService, LoginResponse } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -42,14 +43,15 @@ export class LoginComponent {
     this.loading = true;
     this.error = '';
 
-    this.auth.login({ email: this.email, password: this.password }).subscribe({
-      next: () => {
+    this.auth.login(this.email, this.password).subscribe({
+      next: (res: LoginResponse) => {
+        this.loading = false;
         this.close.emit();
         this.router.navigate(['/restaurantes']);
       },
       error: (err) => {
-        this.error = err.error?.message || 'Credenciales incorrectas';
         this.loading = false;
+        this.error = err.error?.message || 'Credenciales incorrectas';
       }
     });
   }
@@ -59,6 +61,8 @@ export class LoginComponent {
   }
 
   onInputChange() {
-    if (this.error) this.error = '';
+    if (this.error) {
+      this.error = '';
+    }
   }
 }

@@ -1,16 +1,10 @@
+// src/app/services/restaurante.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient }  from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
-export interface Restaurante {
-  id?: number;
-  nombre: string;
-  direccion: string;
-  descripcion?: string;
-  menu: Record<string, number>;
-  // otros campos según tu API
-}
+import { RestauranteRaw, Restaurante, Promo } from '../models/restaurante.model';
 
 @Injectable({ providedIn: 'root' })
 export class RestauranteService {
@@ -19,22 +13,53 @@ export class RestauranteService {
   constructor(private http: HttpClient) {}
 
   listar(): Observable<Restaurante[]> {
-    return this.http.get<Restaurante[]>(this.baseUrl);
+    return this.http.get<RestauranteRaw[]>(this.baseUrl).pipe(
+      map(list => list.map(raw => this.parse(raw)))
+    );
   }
 
   obtener(id: number): Observable<Restaurante> {
-    return this.http.get<Restaurante>(`${this.baseUrl}/${id}`);
+    return this.http.get<RestauranteRaw>(`${this.baseUrl}/${id}`).pipe(
+      map(raw => this.parse(raw))
+    );
   }
 
-  crear(restaurante: Restaurante): Observable<Restaurante> {
-    return this.http.post<Restaurante>(this.baseUrl, restaurante);
+  crear(raw: Partial<RestauranteRaw>): Observable<RestauranteRaw> {
+    return this.http.post<RestauranteRaw>(this.baseUrl, raw);
   }
 
-  actualizar(id: number, restaurante: Partial<Restaurante>): Observable<Restaurante> {
-    return this.http.put<Restaurante>(`${this.baseUrl}/${id}`, restaurante);
+  actualizar(id: number, raw: Partial<RestauranteRaw>): Observable<RestauranteRaw> {
+    return this.http.put<RestauranteRaw>(`${this.baseUrl}/${id}`, raw);
   }
 
   eliminar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  private parse(raw: RestauranteRaw): Restaurante {
+    let parsed: any;
+    try {
+      parsed = JSON.parse(raw.menu);
+    } catch {
+      parsed = {};
+    }
+
+    // Si viniera un objeto plano { "1": 8.99, "2": 5.0 }, lo convertimos:
+    if (!Array.isArray(parsed.promos) && typeof parsed === 'object') {
+      parsed = {
+        promos: Object.entries(parsed).map(([key, precio]) => ({
+          url:    '',
+          nombre: `Promo ${key}`,
+          precio: Number(precio)
+        }))
+      };
+    }
+
+    return {
+      idRestaurante: raw.idRestaurante,  // opcional según tu interfaz
+      nombre:        raw.nombre,
+      direccion:     raw.direccion,
+      promos:        Array.isArray(parsed.promos) ? parsed.promos : []
+    };
   }
 }

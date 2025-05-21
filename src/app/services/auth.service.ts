@@ -1,50 +1,49 @@
-// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
-interface LoginPayload  { email: string; password: string; }
-interface LoginResponse { token: string; }
-interface RegisterPayload { nombre: string; email: string; password: string; }
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  rol: string;
+  idUsuario: number;
+  nombre: string;
+  email: string;
+  // no incluimos password en la respuesta
+}
+
+export interface RegisterPayload {
+  nombre: string;
+  email: string;
+  password: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiBase = environment.apiBase + '/usuarios';
+  /** URL base de la API (ajusta según tu backend) */
+  private apiBase = `${environment.apiBase}/usuarios`;
 
-  // 1️⃣ Estado de autenticación
-  private _isAuthenticated = new BehaviorSubject<boolean>(!!this.getToken());
+  /** Observador para saber si el usuario está autenticado */
+  private _isAuthenticated = new BehaviorSubject<boolean>(!!this.getUserId());
   readonly isAuthenticated$ = this._isAuthenticated.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  /** Devuelve el token guardado (o null) */
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  /** Header Authorization para usar en futuras peticiones */
-  get authHeaders(): HttpHeaders {
-    const token = this.getToken();
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {})
-    });
-  }
-
-  /** Login */
-  login(payload: LoginPayload): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>(`${this.apiBase}/login`, payload, {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-      })
-      .pipe(
-        tap(res => {
-          // Guarda token y actualiza estado
+  /** Login: guarda idUsuario y token (si aplica) en localStorage */
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiBase}/login`, { email, password }).pipe(
+      tap((res: any) => {
+        localStorage.setItem('userId', res.idUsuario);
+        if (res.token) {
           localStorage.setItem('token', res.token);
-          this._isAuthenticated.next(true);
-        })
-      );
+        }
+        this._isAuthenticated.next(true);
+      })
+    );
   }
 
   /** Registro de nuevo usuario */
@@ -52,13 +51,18 @@ export class AuthService {
     return this.http.post(`${this.apiBase}`, payload, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });
-    // Nota: no marcamos isAuthenticated=true tras register; 
-    // normalmente esperamos al login para emitir true
   }
 
-  /** Logout */
+  /** Logout: elimina userId y token del almacenamiento */
   logout(): void {
+    localStorage.removeItem('userId');
     localStorage.removeItem('token');
     this._isAuthenticated.next(false);
+  }
+
+  /** Devuelve el userId guardado (o 0 si no existe) */
+  getUserId(): number {
+    const storedId = localStorage.getItem('userId');
+    return storedId ? parseInt(storedId, 10) : 0;
   }
 }

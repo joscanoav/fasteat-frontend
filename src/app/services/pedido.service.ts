@@ -27,9 +27,9 @@ export class PedidoService {
     return this.http.get<Pedido>(`${this.baseUrl}/${id}`);
   }
 
-  crear(pedido: Pedido): Observable<Pedido> {
-    return this.http.post<Pedido>(this.baseUrl, pedido);
-  }
+ crear(pedido: any): Observable<Pedido> {
+  return this.http.post<Pedido>(this.baseUrl, pedido);
+}
 
   actualizar(id: number, pedido: Partial<Pedido>): Observable<Pedido> {
     return this.http.put<Pedido>(`${this.baseUrl}/${id}`, pedido);

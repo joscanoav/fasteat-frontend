@@ -1,3 +1,4 @@
+// auth.interceptor.ts
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
@@ -13,13 +14,17 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private auth: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.auth.getToken();
-    if (token) {
-      const authReq = req.clone({
-        setHeaders: { Authorization: `Bearer ${token}` }
-      });
-      return next.handle(authReq);
+    const userId = this.auth.getUserId();
+    // Si no tienes userId, dejamos la petición tal cual
+    if (!userId) {
+      return next.handle(req);
     }
-    return next.handle(req);
+    // Clonamos la petición y añadimos un header con el userId
+    const authReq = req.clone({
+      setHeaders: {
+        'X-User-Id': userId.toString()
+      }
+    });
+    return next.handle(authReq);
   }
 }
