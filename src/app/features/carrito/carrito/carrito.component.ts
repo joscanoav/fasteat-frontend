@@ -5,7 +5,9 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { PedidoService } from 'app/services/pedido.service';
 import { CarritoService } from 'app/services/carrito.service';
@@ -22,22 +24,27 @@ import { AuthService } from 'app/services/auth.service';
     TableModule,
     ButtonModule,
     InputNumberModule,
-    ToastModule
+    ToastModule,
+    DialogModule,
+    ConfirmDialogModule
   ],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './carrito.component.html',
   styleUrls: ['./carrito.component.css']
 })
 export class CarritoComponent implements OnInit {
   items: CarritoItem[] = [];
   total = 0;
+  displayDialog = false;
+  orderSummary = false;
 
   constructor(
     public carritoSvc: CarritoService,
     private pedSvc: PedidoService,
     private router: Router,
     private auth: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
@@ -62,31 +69,27 @@ export class CarritoComponent implements OnInit {
     this.carritoSvc.removeItem(item);
   }
 
-  placeOrder() {
-    if (!this.items.length) return;
-
-    const userId = this.auth.getUserId();
-    const payload = {
-      usuario_id: userId,
-      items: this.items.map(i => ({
-        producto_id: i.restauranteId,
-        cantidad:     i.cantidad
-      })),
-      total: this.total
-    };
-
-    this.pedSvc.crear(payload).subscribe({
-      next: () => {
-        this.carritoSvc.vaciar();
-        this.messageService.add({severity:'success', summary:'Éxito', detail:'Pedido realizado'});
-        this.router.navigate(['/mis-pedidos']);
-      },
-      error: err => console.error('Error al realizar pedido', err)
+  confirmCancel() {
+    this.confirmationService.confirm({
+      message: '¿Deseas anular la compra? Esta acción no se puede deshacer.',
+      accept: () => this.cancelOrder()
     });
   }
 
   cancelOrder() {
     this.carritoSvc.vaciar();
     this.messageService.add({severity:'warn', summary:'Carrito', detail:'Compra anulada'});
+  }
+
+  confirmFinish() {
+    this.confirmationService.confirm({
+      message: '¿Confirmas finalizar el pedido? Una vez enviado, no podrás modificarlo.',
+      accept: () => this.finishOrder()
+    });
+  }
+
+  finishOrder() {
+    if (!this.items.length) return;
+    this.displayDialog = true;
   }
 }

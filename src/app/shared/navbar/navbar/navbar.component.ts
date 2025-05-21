@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -17,6 +18,7 @@ export class NavbarComponent {
   @Input() isLoggedIn = false;
   @Output() logout = new EventEmitter<void>();
 
+  constructor(private router: Router) {}
   items = [
     { label: 'Inicio',     routerLink: '/' },
     { label: 'Menú',       routerLink: '/menu' },
@@ -25,5 +27,9 @@ export class NavbarComponent {
     { label: 'Carrito',    routerLink: '/carrito' }
   ];
 
-  onLogoutClick() { this.logout.emit(); }
+
+  onLogoutClick() {
+    this.logout.emit();                     // emites evento para que el padre limpie token, etc.
+    this.router.navigate(['/']);            // ← navegas a la ruta raíz
+  }
 }
