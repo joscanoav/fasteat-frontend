@@ -26,13 +26,13 @@ export class HeaderComponent implements OnInit {
   menuItems: MegaMenuItem[] = [];
   loginDialogVisible = false;
 
-  ngOnInit(): void {
-    this.menuItems = [
-      { label: 'Nuestra Carta', routerLink: ['/carta'] },
-      { label: 'Cupones',      routerLink: ['/coupons'] },
-      { label: 'Ubicación',    routerLink: ['/locations'] }
-    ];
-  }
+ngOnInit(): void {
+  this.menuItems = [
+    { label: 'Nuestras Promociones', routerLink: ['/promos'] },
+    { label: 'Cupones',      routerLink: ['/coupons'] },
+    { label: 'Ubicación',    routerLink: ['/locations'] }
+  ];
+}
 
   showLoginDialog(): void {
     this.loginDialogVisible = true;

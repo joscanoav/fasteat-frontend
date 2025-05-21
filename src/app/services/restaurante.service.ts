@@ -8,6 +8,7 @@ export interface Restaurante {
   nombre: string;
   direccion: string;
   descripcion?: string;
+  menu: Record<string, number>;
   // otros campos según tu API
 }
 

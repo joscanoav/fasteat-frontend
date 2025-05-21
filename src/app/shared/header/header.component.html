@@ -4,41 +4,31 @@
 </div>
 
 <div class="card mega-card">
-  <p-megamenu [model]="menuItems" class="mega-menu">
-    <ng-template #start>
-      <a routerLink="/" class="logo">
-        <img
-          src="assets/images/logo.png"
-          alt="Logo FastEat"
-          class="logo-img"
-        >
+<p-megamenu [model]="menuItems" class="mega-menu">
+  <ng-template #start>
+    <div class="logo">
+      <a routerLink="/">
+        <img src="assets/images/logo.png" alt="Logo FastEat" class="logo-img" />
       </a>
-    </ng-template>
+    </div>
+  </ng-template>
 
-    <ng-template #item let-item>
-      <a
-        *ngIf="item.routerLink"
-        [routerLink]="item.routerLink"
-        class="menu-item"
-      >
-        <span>{{ item.label }}</span>
-      </a>
-    </ng-template>
+  <ng-template #item let-item>
+    <a [routerLink]="item.routerLink" class="menu-item">
+      {{ item.label }}
+    </a>
+  </ng-template>
 
-    <ng-template #end>
-      <div class="menu-right">
-        <button
-          pButton
-          type="button"
-          class="p-button-primary order-button"
-          (click)="showLoginDialog()"
-        >
-          <i class="pi pi-shopping-cart"></i>
-          <span>Comenzar pedido</span>
-        </button>
-      </div>
-    </ng-template>
-  </p-megamenu>
+  <ng-template #end>
+    <div class="menu-right">
+      <button pButton type="button" class="order-button" (click)="showLoginDialog()">
+        <i class="pi pi-shopping-cart"></i>
+        <span>Comenzar pedido</span>
+      </button>
+    </div>
+  </ng-template>
+</p-megamenu>
+
 </div>
 
 <p-dialog
