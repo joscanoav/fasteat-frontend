@@ -1,12 +1,11 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { Tag } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PromoService } from 'app/services/promo.service';
 
-import { PlatoService } from 'app/services/carta.service';
 import { HeaderComponent } from 'app/shared/header/header.component';
-import { Plato } from './plato';
+import { Promo } from 'app/models/restaurante.model';
 
 @Component({
   selector: 'app-promos',
@@ -14,34 +13,24 @@ import { Plato } from './plato';
   styleUrls: ['./promos.component.css'],
   standalone: true,
   imports: [
-    Tag,
     ButtonModule,
     CommonModule,
     FormsModule,
     HeaderComponent
   ],
-  providers: [PlatoService],
+  providers: [PromoService],
 })
 export class PromosComponent implements OnInit {
-  platos = signal<Plato[]>([]);
+  promos = signal<Promo[]>([]);
 
-  constructor(private platoService: PlatoService) {}
+  constructor(private promoService: PromoService) {}
 
   ngOnInit() {
-    this.platoService.getPlatos().then(platos => this.platos.set(platos));
+    this.promoService.listarTodas()
+      .subscribe(ps => this.promos.set(ps));
   }
 
-  /** Sólo los primeros 6 para la galería */
-  get primerosSeis(): Plato[] {
-    return this.platos().slice(0, 6);
-  }
-
-  getSeverity(plato: Plato) {
-    switch (plato.inventoryStatus) {
-      case 'INSTOCK':    return 'success';
-      case 'LOWSTOCK':   return 'warn';
-      case 'OUTOFSTOCK': return 'danger';
-      default:           return null;
-    }
+  get primerosSeis(): Promo[] {
+    return this.promos().slice(0, 6);
   }
 }

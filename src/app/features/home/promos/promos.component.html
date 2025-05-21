@@ -3,39 +3,17 @@
 <div class="gallery-card">
 
   <div class="gallery-grid">
-    <div *ngFor="let plato of primerosSeis" class="gallery-item">
-
-      <!-- imagen cuadrada -->
-      <div class="image-container">
-        <img [src]="plato.image" [alt]="plato.name" />
-        <p-tag
-          class="status-tag"
-          [value]="plato.inventoryStatus"
-          [severity]="getSeverity(plato)"
-        ></p-tag>
-      </div>
-
-      <!-- contenido -->
-      <div class="item-content">
-        <div class="text-block">
-          <div class="category">{{ plato.category }}</div>
-          <div class="name">{{ plato.name }}</div>
-        </div>
-        <div class="price">{{ plato.price | currency:'USD' }}</div>
-      </div>
-
-      <!-- botones -->
-      <div class="item-actions">
-        <button
-          pButton
-          icon="pi pi-shopping-cart"
-          label="Ordenar"
-          [disabled]="plato.inventoryStatus === 'OUTOFSTOCK'"
-        ></button>
-        <button pButton icon="pi pi-heart" outlined></button>
-      </div>
-
-    </div>
+   <div *ngFor="let promo of primerosSeis" class="gallery-item">
+  <div class="image-container">
+    <img [src]="promo.url" [alt]="promo.nombre" />
   </div>
+  <div class="item-content">
+    <div class="text-block">
+      <div class="name">{{ promo.nombre }}</div>
+      <div class="price">{{ promo.precio | currency:'EUR' }}</div>
+    </div>
+    <button pButton icon="pi pi-shopping-cart" label="Ordenar"></button>
+  </div>
+</div>
 
 </div>
