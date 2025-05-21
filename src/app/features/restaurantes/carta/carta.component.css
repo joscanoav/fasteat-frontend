@@ -84,3 +84,43 @@
   flex: 1;
   font-size: 0.85rem;
 }
+
+.carta-container {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+/* carta.component.css */
+.p-card .p-card-header {
+  position: relative;
+  width: 100%;
+  padding-top: 70%;        /* altura relativa menor (antes auto) */
+  overflow: hidden;
+}
+
+.p-card .p-card-header img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Centrar y negrita del título */
+.gallery-card h2 {
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 24px;
+}
+
+.go-cart-btn {
+  display: block;
+  margin: 24px auto 0;
+}
+
+
+
+

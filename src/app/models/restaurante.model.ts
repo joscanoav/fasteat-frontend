@@ -1,23 +1,33 @@
 // src/app/models/restaurante.model.ts
 
 export interface RestauranteRaw {
-  idRestaurante?: number;
-  nombre:     string;
-  direccion:  string;
-  menu:       any;      // <— ahora un objeto JSON, no string
-}
-
-
-/** Promo parseada */
-export interface Promo {
-  url:    string;
+  idRestaurante: number;
   nombre: string;
-  precio: number;
+  direccion: string;
+  menu: string;      // JSON stringificado
 }
 
-/** Lo que utilizan tus componentes */
+// Interfaz “cruda” tal como viene del backend de productos
+export interface PromoRaw {
+  idProducto:    number;
+  nombre:        string;
+  descripcion:   string;
+  precio:        number;
+  categoria:     string;
+  disponible:    boolean;
+  urlImagen:     string;   // ojo: “urlImagen”, no “url_imagen”
+  idRestaurante: number;
+}
+
+export interface Promo {
+  idProducto: number;
+  nombre:     string;
+  precio:     number;
+  url:        string;
+}
+
 export interface Restaurante {
-  idRestaurante?: number;   // opcional porque al crear puede no existir aún
+  idRestaurante: number;
   nombre:        string;
   direccion:     string;
   promos:        Promo[];

@@ -4,7 +4,7 @@ import { HttpClient }  from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, map } from 'rxjs';
 
-import { RestauranteRaw, Restaurante, Promo } from '../models/restaurante.model';
+import { RestauranteRaw, Restaurante, Promo, PromoRaw } from '../models/restaurante.model';
 
 @Injectable({ providedIn: 'root' })
 export class RestauranteService {
@@ -35,6 +35,25 @@ export class RestauranteService {
   eliminar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  listarProductos(restauranteId: number): Observable<Promo[]> {
+  return this.http
+    .get<PromoRaw[]>(`${environment.apiBase}/productos?restaurante=${restauranteId}`)
+    .pipe(
+      // 1) filtrar sólo los que sean de este restaurante
+      map(list => list.filter(p => p.idRestaurante === restauranteId)),
+      // 2) convertir a tu interfaz Promo
+      map(list =>
+        list.map(raw => ({
+          idProducto: raw.idProducto,
+          nombre:     raw.nombre,
+          precio:     raw.precio,
+          url:        raw.urlImagen
+        }))
+      )
+    );
+}
+
 
   private parse(raw: RestauranteRaw): Restaurante {
     let parsed: any;
